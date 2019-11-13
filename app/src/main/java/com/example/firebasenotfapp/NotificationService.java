@@ -1,6 +1,7 @@
 package com.example.firebasenotfapp;
 
 import android.app.Notification;
+import android.content.Context;
 import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
@@ -31,12 +32,13 @@ public class NotificationService extends FirebaseMessagingService {
      */
     @Override
     public void onNewToken(String token) {
-        Log.d(TAG, "Refreshed token: " + token);
-
-        // If you want to send messages to this application instance or
-        // manage this apps subscriptions on the server side, send the
-        // Instance ID token to your app server.
-        // Méo biết code sao cai ham nay :v
-        // sendRegistrationToServer(token);
+        super.onNewToken(token);
+        Log.d("FCMToken", "Refreshed token: " + token);
+        getSharedPreferences("_", MODE_PRIVATE).edit().putString("fb", token).apply();
     }
+
+    public static String getToken(Context context) {
+        return context.getSharedPreferences("_", MODE_PRIVATE).getString("fb", "empty");
+    }
+
 }
